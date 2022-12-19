@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/android_projects/UiTestingWithExpresso/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/android_projects/UiTestingWithExpresso/app/src/main/res/layout/activity_second.xml" value="0.11302083333333333" />
+        <entry key="..\:/android_projects/UiTestingWithExpresso/app/src/main/res/layout/fragment_directors.xml" value="0.176" />
+        <entry key="..\:/android_projects/UiTestingWithExpresso/app/src/main/res/layout/fragment_movie_detail.xml" value="0.11302083333333333" />
+        <entry key="..\:/android_projects/UiTestingWithExpresso/app/src/main/res/layout/fragment_star_actors.xml" value="0.264" />
       </map>
     </option>
   </component>
