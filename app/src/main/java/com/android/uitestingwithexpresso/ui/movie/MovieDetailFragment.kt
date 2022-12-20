@@ -42,29 +42,29 @@ class MovieDetailFragment : Fragment(){
         return binding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setMovieDetails()
-
-        binding?.movieDirectiors?.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putStringArrayList("args_directors", movie.directors)
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.container, DirectorsFragment::class.java, bundle)
-                ?.addToBackStack("DirectorsFragment")
-                ?.commit()
-        }
-
-        binding?.movieStarActors?.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putStringArrayList("args_actors", movie.star_actors)
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.container, StarActorsFragment::class.java, bundle)
-                ?.addToBackStack("StarActorsFragment")
-                ?.commit()
-        }
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        setMovieDetails()
+//
+//        binding?.movieDirectiors?.setOnClickListener {
+//            val bundle = Bundle()
+//            bundle.putStringArrayList("args_directors", movie.directors)
+//            activity?.supportFragmentManager?.beginTransaction()
+//                ?.replace(R.id.container, DirectorsFragment::class.java, bundle)
+//                ?.addToBackStack("DirectorsFragment")
+//                ?.commit()
+//        }
+//
+//        binding?.movieStarActors?.setOnClickListener {
+//            val bundle = Bundle()
+//            bundle.putStringArrayList("args_actors", movie.star_actors)
+//            activity?.supportFragmentManager?.beginTransaction()
+//                ?.replace(R.id.container, StarActorsFragment::class.java, bundle)
+//                ?.addToBackStack("StarActorsFragment")
+//                ?.commit()
+//        }
+//    }
 
     private fun setMovieDetails(){
         movie.let{ nonNullMovie ->
