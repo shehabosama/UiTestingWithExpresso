@@ -2,6 +2,7 @@ package com.android.uitestingwithexpresso.ui.movie
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,7 +14,8 @@ import com.bumptech.glide.Glide
 import com.codingwithmitch.espressouitestexamples.factory.MovieFragmentFactory
 import com.codingwithmitch.espressouitestexamples.ui.movie.MovieDetailFragment
 const val GALLERY_REQUEST_CODE = 1234
-
+const val REQUEST_IMAGE_CAPTURE = 12345
+const val KEY_IMAGE_DATA = "data"
 class MainActivity : AppCompatActivity() {
     private val TAG: String = "AppDebug"
     private var binding:ActivityMainBinding?=null
@@ -24,9 +26,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
 
-        binding?.buttonOpenGallery?.setOnClickListener {
-            pickFromGallery()
+//        binding?.buttonOpenGallery?.setOnClickListener {
+//            pickFromGallery()
+//        }
+        binding?.buttonLaunchCamera?.setOnClickListener {
+            dispatchCameraIntent()
         }
+
     }
 
 //    private fun init() {
@@ -42,28 +48,55 @@ class MainActivity : AppCompatActivity() {
 //        }
 //    }
 
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if(resultCode == Activity.RESULT_OK){
+//            Log.d(TAG, "RESULT_OK")
+//            when(requestCode){
+//
+//                GALLERY_REQUEST_CODE -> {
+//                    Log.d(TAG, "GALLERY_REQUEST_CODE detected.")
+//                    data?.data?.let { uri ->
+//                        Log.d(TAG, "URI: $uri")
+//                        Glide.with(this)
+//                            .load(uri)
+//                            .into(binding?.image!!)
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+//    private fun pickFromGallery() {
+//        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+//        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+//    }
+
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK){
             Log.d(TAG, "RESULT_OK")
             when(requestCode){
 
-                GALLERY_REQUEST_CODE -> {
-                    Log.d(TAG, "GALLERY_REQUEST_CODE detected.")
-                    data?.data?.let { uri ->
-                        Log.d(TAG, "URI: $uri")
-                        Glide.with(this)
-                            .load(uri)
-                            .into(binding?.image!!)
+                REQUEST_IMAGE_CAPTURE -> {
+                    Log.d(TAG, "REQUEST_IMAGE_CAPTURE detected.")
+                    data?.extras.let{ extras ->
+                        if (extras == null || !extras.containsKey(KEY_IMAGE_DATA)) {
+                            return
+                        }
+                        val imageBitmap = extras[KEY_IMAGE_DATA] as Bitmap?
+                        binding?.image?.setImageBitmap(imageBitmap)
                     }
                 }
             }
         }
     }
 
-    private fun pickFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+    private fun dispatchCameraIntent() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
 }
