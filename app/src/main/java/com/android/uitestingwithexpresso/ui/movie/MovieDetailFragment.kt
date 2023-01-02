@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.codingwithmitch.espressouitestexamples.data.Movie
 import com.codingwithmitch.espressouitestexamples.data.source.MoviesDataSource
-import com.codingwithmitch.espressouitestexamples.data.source.MoviesRemoteDataSource
 
 
 class MovieDetailFragment constructor(

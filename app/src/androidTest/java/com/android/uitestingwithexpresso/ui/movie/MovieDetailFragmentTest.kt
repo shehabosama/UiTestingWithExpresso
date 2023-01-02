@@ -10,7 +10,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.uitestingwithexpresso.R
 import com.bumptech.glide.request.RequestOptions
 import com.codingwithmitch.espressouitestexamples.data.Movie
-import com.codingwithmitch.espressouitestexamples.data.source.MoviesRemoteDataSource
+import com.android.uitestingwithexpresso.data.source.MoviesRemoteDataSource
 import com.codingwithmitch.espressouitestexamples.factory.MovieFragmentFactory
 import com.codingwithmitch.espressouitestexamples.ui.movie.MovieDetailFragment
 import io.mockk.every

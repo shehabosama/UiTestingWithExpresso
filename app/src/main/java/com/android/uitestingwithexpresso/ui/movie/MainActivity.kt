@@ -7,15 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Button
 import com.android.uitestingwithexpresso.R
 import com.android.uitestingwithexpresso.databinding.ActivityMainBinding
-import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.codingwithmitch.espressouitestexamples.data.source.MoviesDataSource
-import com.codingwithmitch.espressouitestexamples.data.source.MoviesRemoteDataSource
+import com.android.uitestingwithexpresso.data.source.MoviesRemoteDataSource
 import com.codingwithmitch.espressouitestexamples.factory.MovieFragmentFactory
 import com.codingwithmitch.espressouitestexamples.ui.movie.MovieDetailFragment
+import com.codingwithmitch.espressouitestexamples.ui.movie.MovieListFragment
+
 const val GALLERY_REQUEST_CODE = 1234
 const val REQUEST_IMAGE_CAPTURE = 12345
 const val KEY_IMAGE_DATA = "data"
@@ -50,18 +50,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
         // if there is no fragment attached to any screen or any activity it will return 0 the will attache it
-        if (supportFragmentManager.fragments.size == 0) {
-            val movieId = 1
-            val bundle = Bundle()
-            bundle.putInt("movie_id", movieId)
+        if(supportFragmentManager.fragments.size == 0){
             supportFragmentManager.beginTransaction()
-                .replace(
-                    R.id.container,
-                    /** before fragment factory you have to initialize the fragment here but because the fragment factory you can pass the class directly*/
-                    MovieDetailFragment::class.java, bundle
-                )
+                .replace(R.id.container, MovieListFragment::class.java, null)
                 .commit()
         }
+//        if (supportFragmentManager.fragments.size == 0) {
+//            val movieId = 1
+//            val bundle = Bundle()
+//            bundle.putInt("movie_id", movieId)
+//            supportFragmentManager.beginTransaction()
+//                .replace(
+//                    R.id.container,
+//                    /** before fragment factory you have to initialize the fragment here but because the fragment factory you can pass the class directly*/
+//                    MovieDetailFragment::class.java, bundle
+//                )
+//                .commit()
+//        }
     }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
