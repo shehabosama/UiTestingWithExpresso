@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.android.uitestingwithexpresso">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,6 +22,5 @@
             </intent-filter>
         </activity>
     </application>
-    <instrumentation android:targetPackage="com.android.uitestingwithexpresso"
-        android:name="android.test.InstrumentationTestRunner" />
+
 </manifest>

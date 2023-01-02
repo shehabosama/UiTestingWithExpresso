@@ -11,6 +11,9 @@ import android.widget.Button
 import com.android.uitestingwithexpresso.R
 import com.android.uitestingwithexpresso.databinding.ActivityMainBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.codingwithmitch.espressouitestexamples.data.source.MoviesDataSource
+import com.codingwithmitch.espressouitestexamples.data.source.MoviesRemoteDataSource
 import com.codingwithmitch.espressouitestexamples.factory.MovieFragmentFactory
 import com.codingwithmitch.espressouitestexamples.ui.movie.MovieDetailFragment
 const val GALLERY_REQUEST_CODE = 1234
@@ -18,9 +21,18 @@ const val REQUEST_IMAGE_CAPTURE = 12345
 const val KEY_IMAGE_DATA = "data"
 class MainActivity : AppCompatActivity() {
     private val TAG: String = "AppDebug"
-    private var binding:ActivityMainBinding?=null
+    private var binding: ActivityMainBinding? = null
+
+    // dependencies (typically would be injected with dagger)
+    lateinit var requestOptions: RequestOptions
+    lateinit var moviesDataSource: MoviesDataSource
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportFragmentManager.fragmentFactory = MovieFragmentFactory()
+        initDependencies()
+        supportFragmentManager.fragmentFactory = MovieFragmentFactory(
+            requestOptions,
+            moviesDataSource
+        )
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
@@ -29,24 +41,28 @@ class MainActivity : AppCompatActivity() {
 //        binding?.buttonOpenGallery?.setOnClickListener {
 //            pickFromGallery()
 //        }
-        binding?.buttonLaunchCamera?.setOnClickListener {
-            dispatchCameraIntent()
-        }
+//        binding?.buttonLaunchCamera?.setOnClickListener {
+//            dispatchCameraIntent()
+//        }
 
+        init()
     }
 
-//    private fun init() {
-//        // if there is no fragment attached to any screen or any activity it will return 0 the will attache it
-//        if (supportFragmentManager.fragments.size == 0) {
-//            val movieId = 1
-//            val bundle = Bundle()
-//            bundle.putInt("movie_id", movieId)
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.container,/** before fragment factory you have to initialize the fragment here but because the fragment factory you can pass the class directly*/
-//                    MovieDetailFragment::class.java, bundle)
-//                .commit()
-//        }
-//    }
+    private fun init() {
+        // if there is no fragment attached to any screen or any activity it will return 0 the will attache it
+        if (supportFragmentManager.fragments.size == 0) {
+            val movieId = 1
+            val bundle = Bundle()
+            bundle.putInt("movie_id", movieId)
+            supportFragmentManager.beginTransaction()
+                .replace(
+                    R.id.container,
+                    /** before fragment factory you have to initialize the fragment here but because the fragment factory you can pass the class directly*/
+                    MovieDetailFragment::class.java, bundle
+                )
+                .commit()
+        }
+    }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
@@ -73,16 +89,15 @@ class MainActivity : AppCompatActivity() {
 //    }
 
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             Log.d(TAG, "RESULT_OK")
-            when(requestCode){
+            when (requestCode) {
 
                 REQUEST_IMAGE_CAPTURE -> {
                     Log.d(TAG, "REQUEST_IMAGE_CAPTURE detected.")
-                    data?.extras.let{ extras ->
+                    data?.extras.let { extras ->
                         if (extras == null || !extras.containsKey(KEY_IMAGE_DATA)) {
                             return
                         }
@@ -94,6 +109,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun initDependencies() {
+
+        // glide
+        requestOptions = RequestOptions
+            .placeholderOf(R.drawable.default_image)
+            .error(R.drawable.default_image)
+
+        // Data Source
+        moviesDataSource = MoviesRemoteDataSource()
+    }
     private fun dispatchCameraIntent() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);

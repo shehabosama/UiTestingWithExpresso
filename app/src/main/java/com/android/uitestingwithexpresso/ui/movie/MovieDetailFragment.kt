@@ -8,11 +8,16 @@ import androidx.fragment.app.Fragment
 import com.android.uitestingwithexpresso.R
 import com.android.uitestingwithexpresso.databinding.FragmentMovieDetailBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.codingwithmitch.espressouitestexamples.data.Movie
+import com.codingwithmitch.espressouitestexamples.data.source.MoviesDataSource
 import com.codingwithmitch.espressouitestexamples.data.source.MoviesRemoteDataSource
 
 
-class MovieDetailFragment : Fragment(){
+class MovieDetailFragment constructor(
+    val requestOptions: RequestOptions,
+    val moviesDataSource: MoviesDataSource
+): Fragment(){
 
     private lateinit var movie: Movie
 
@@ -26,7 +31,7 @@ class MovieDetailFragment : Fragment(){
         super.onCreate(savedInstanceState)
         arguments?.let { args ->
             args.getInt("movie_id").let{ movieId ->
-                MoviesRemoteDataSource.getMovie(movieId)?.let{ movieFromRemote ->
+                moviesDataSource.getMovie(movieId)?.let{ movieFromRemote ->
                     movie = movieFromRemote
                 }
             }
@@ -42,29 +47,29 @@ class MovieDetailFragment : Fragment(){
         return binding?.root
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        setMovieDetails()
-//
-//        binding?.movieDirectiors?.setOnClickListener {
-//            val bundle = Bundle()
-//            bundle.putStringArrayList("args_directors", movie.directors)
-//            activity?.supportFragmentManager?.beginTransaction()
-//                ?.replace(R.id.container, DirectorsFragment::class.java, bundle)
-//                ?.addToBackStack("DirectorsFragment")
-//                ?.commit()
-//        }
-//
-//        binding?.movieStarActors?.setOnClickListener {
-//            val bundle = Bundle()
-//            bundle.putStringArrayList("args_actors", movie.star_actors)
-//            activity?.supportFragmentManager?.beginTransaction()
-//                ?.replace(R.id.container, StarActorsFragment::class.java, bundle)
-//                ?.addToBackStack("StarActorsFragment")
-//                ?.commit()
-//        }
-//    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setMovieDetails()
+
+        binding?.movieDirectiors?.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putStringArrayList("args_directors", movie.directors)
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.container, DirectorsFragment::class.java, bundle)
+                ?.addToBackStack("DirectorsFragment")
+                ?.commit()
+        }
+
+        binding?.movieStarActors?.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putStringArrayList("args_actors", movie.star_actors)
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.container, StarActorsFragment::class.java, bundle)
+                ?.addToBackStack("StarActorsFragment")
+                ?.commit()
+        }
+    }
 
     private fun setMovieDetails(){
         movie.let{ nonNullMovie ->

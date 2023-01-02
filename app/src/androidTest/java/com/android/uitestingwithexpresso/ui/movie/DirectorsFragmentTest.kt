@@ -30,7 +30,5 @@ class DirectorsFragmentTest{
         // VERIFY
         onView(withId(R.id.directors_text)).check(matches(withText(DirectorsFragment.stringBuilderForDirectors(directors))))
 
-
-
     }
 }
